@@ -27,6 +27,11 @@ import { check, PERMISSIONS, RESULTS, openSettings } from 'react-native-permissi
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { useNavigation } from '@react-navigation/native';
 
+const DARK = true;
+const textColor = DARK ? '#fff' : '#000';
+const placeholderColor = DARK ? '#ffffff80' : '#00000080';
+const backgroundColor = DARK ? '#2d1b69' : '#fff';
+
 const X_CONFIG = {
     issuer: 'https://twitter.com/i/oauth2',
     clientId: Config.X_CLIENT_ID ?? '',
@@ -181,7 +186,10 @@ function Main(): React.JSX.Element {
 
     return (
         <SafeAreaView style={styles.container}>
-            <StatusBar barStyle={'dark-content'} backgroundColor={'transparent'} />
+            <StatusBar
+                barStyle={DARK ? 'light-content' : 'dark-content'}
+                backgroundColor={backgroundColor}
+            />
             <KeyboardAvoidingView
                 style={styles.flexView}
                 behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
@@ -200,10 +208,7 @@ function Main(): React.JSX.Element {
                         )}
                     </View>
 
-                    <TouchableOpacity
-                        style={(loading || !!xAuth) && styles.disabledView}
-                        disabled={loading || !!xAuth}
-                        onPress={connectToX}>
+                    <TouchableOpacity onPress={connectToX}>
                         <View style={styles.smButton}>
                             <Text style={styles.buttonLb}>
                                 {xAuth ? 'Connected' : 'Connect'} To X
@@ -240,18 +245,20 @@ function Main(): React.JSX.Element {
                             editable={!loading && isFollowUs && !!xAuth}
                             value={walletAddress}
                             style={styles.input}
+                            placeholderTextColor={placeholderColor}
                             onChangeText={setWalletAddress}
                             placeholder={'Venom Wallet Address'}
                             autoCorrect={false}
                             returnKeyType={'done'}
                         />
-                        {/* <TouchableOpacity
-                        style={styles.qrcode}
-                        activeOpacity={0.8}
-                        hitSlop={hitSlop}
-                        onPress={onQRCodePress}>
-                        <Icon name={'qrcode'} size={24} color={'#007bff'} />
-                    </TouchableOpacity> */}
+                        <TouchableOpacity
+                            style={styles.qrcode}
+                            activeOpacity={0.8}
+                            hitSlop={hitSlop}
+                            disabled
+                            onPress={onQRCodePress}>
+                            <Icon name={'qrcode'} size={24} color={DARK ? '#fff' : '#007bff'} />
+                        </TouchableOpacity>
                     </View>
                     {errorMessage ? <Text style={styles.errorLb}>{errorMessage}</Text> : null}
                     <TouchableOpacity
@@ -278,6 +285,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         paddingHorizontal: 16,
+        backgroundColor,
     },
     flexView: {
         flex: 1,
@@ -288,15 +296,18 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         marginTop: 16,
         marginBottom: 24,
+        color: textColor,
     },
     desc: {
         fontSize: 14,
         fontWeight: '300',
         marginBottom: 4,
+        color: textColor,
     },
     stepLb: {
         fontSize: 16,
         fontWeight: '400',
+        color: textColor,
     },
     logo: {
         width: 150,
@@ -311,7 +322,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         borderRadius: 8,
         borderWidth: 1,
-        borderColor: '#000',
+        borderColor: textColor,
         alignItems: 'center',
         paddingHorizontal: 8,
     },
@@ -324,6 +335,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         paddingHorizontal: 0,
         paddingVertical: 0,
+        color: textColor,
     },
     smButton: {
         borderRadius: 4,

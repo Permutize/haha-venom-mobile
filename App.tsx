@@ -3,7 +3,6 @@ import FlashMessage from 'react-native-flash-message';
 import { Provider as ReduxProvider } from 'react-redux';
 import { persistStore } from 'redux-persist';
 import store from './src/redux/ReduxStore';
-import Main from './src/Main';
 import Navigation from './src/navigation';
 
 function App(): React.JSX.Element {
